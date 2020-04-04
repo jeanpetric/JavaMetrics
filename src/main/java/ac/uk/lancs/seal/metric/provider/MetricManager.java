@@ -29,10 +29,16 @@ public abstract class MetricManager implements MetricProvider {
             MetricCalculator metricCalculator = metric.getMetricCalculator();
             PreprocessStorage<?> storage = metric.getPreprocessStorage();
             for (File file : files) {
+                // SHOULD PASS SIMPLE RESULTS AND THEN METRICMANAGER CAN ADD THIS SIMPLE RESULT
+                // INTO A PROPER RESULT MAP. OTHERWISE METRICS CAN OVERWRITE RESULTS OF OTHER
+                // METRICS!!! metric -> packageName : value
                 metricCalculator.process(file, results, storage);
             }
             metricCalculator.postprocess(results, storage);
         }
+    }
+
+    private void mergeResults(Object tempResults) {
     }
 
     protected abstract Queue<Metric> getMetrics();
