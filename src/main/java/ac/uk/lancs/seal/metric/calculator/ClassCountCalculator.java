@@ -12,32 +12,32 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
-import ac.uk.lancs.seal.metric.provider.GenericMetric;
 import ac.uk.lancs.seal.metric.provider.MetricCalculator;
+import ac.uk.lancs.seal.metric.provider.PreprocessStorage;
 
 public class ClassCountCalculator implements MetricCalculator {
     private String packageName;
     private int classCount;
 
     @Override
-    public void process(File file, Map<String, Map<String, String>> result, GenericMetric metric) {
+    public void process(File file, Map<String, Map<String, String>> result, PreprocessStorage<?> storage) {
         packageName = "";
         classCount = 0;
         try {
             parseAndVisit(file);
-            recordCount(result, metric);
+            recordCount(result);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void postprocess(Map<String, Map<String, String>> result, GenericMetric metric) {
+    public void postprocess(Map<String, Map<String, String>> result, PreprocessStorage<?> storage) {
         // NOP
     }
 
-    private void recordCount(Map<String, Map<String, String>> result, GenericMetric metric) {
-        String metricFqn = metric.getFqn();
+    private void recordCount(Map<String, Map<String, String>> result) {
+        String metricFqn = "pckg:ccnt";
         int currentCount = 0;
         if (!result.containsKey(packageName)) {
             Map<String, String> map = new HashMap<>();

@@ -10,7 +10,7 @@ public class JavaPackageManager extends MetricManager {
     @Override
     protected List<GenericMetric> getMetrics() {
         List<GenericMetric> metrics = new LinkedList<>();
-        metrics.add(new GenericMetric("pckg:ccnt", new ClassCountCalculator(), null));
+        metrics.add(new GenericMetric(new ClassCountCalculator(), null));
         return metrics;
     }
 }

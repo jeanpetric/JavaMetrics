@@ -24,10 +24,11 @@ public abstract class MetricManager implements MetricProvider {
 
         for (GenericMetric metric : metrics) {
             MetricCalculator metricCalculator = metric.getMetricCalculator();
+            PreprocessStorage<?> storage = metric.getPreprocessStorage();
             for (File file : files) {
-                metricCalculator.process(file, results, metric);
+                metricCalculator.process(file, results, storage);
             }
-            metricCalculator.postprocess(results, metric);
+            metricCalculator.postprocess(results, storage);
         }
     }
 
