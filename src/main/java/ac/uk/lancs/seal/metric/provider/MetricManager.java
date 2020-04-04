@@ -21,11 +21,11 @@ public abstract class MetricManager implements MetricProvider {
 
     @Override
     public void start() {
-        Queue<GenericMetric> metrics = getMetrics();
+        Queue<Metric> metrics = getMetrics();
         int queueSize = metrics.size();
 
         for (int i = 0; i < queueSize; i++) {
-            GenericMetric metric = metrics.remove();
+            GenericMetric metric = metrics.remove().getMetric();
             MetricCalculator metricCalculator = metric.getMetricCalculator();
             PreprocessStorage<?> storage = metric.getPreprocessStorage();
             for (File file : files) {
@@ -35,5 +35,5 @@ public abstract class MetricManager implements MetricProvider {
         }
     }
 
-    protected abstract Queue<GenericMetric> getMetrics();
+    protected abstract Queue<Metric> getMetrics();
 }
