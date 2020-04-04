@@ -25,13 +25,16 @@ public class Client {
                 .collect(Collectors.toList());
         files.forEach(f -> System.out.println(f.getFileName()));
         List<File> filesList = files.stream().map(f -> f.toFile()).collect(Collectors.toList());
-        Map<String, String> results = new HashMap<>();
+        Map<String, Map<String, String>> results = new HashMap<>();
         MetricManager metricManager = new JavaPackageManager();
         metricManager.setInputFiles(filesList);
         metricManager.setOutputResult(results);
         metricManager.start();
-        for (Entry<String, String> r : results.entrySet()) {
-            System.out.println(r.getKey() + " -> " + r.getValue());
+        for (String p : results.keySet()) {
+            System.out.println("package: " + p);
+            for (Entry<String, String> m : results.get(p).entrySet()) {
+                System.out.println(m.getKey() + " -> " + m.getValue());
+            }
         }
     }
 }

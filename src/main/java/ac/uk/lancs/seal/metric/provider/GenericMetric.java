@@ -18,4 +18,8 @@ public class GenericMetric {
     public MetricCalculator getMetricCalculator() {
         return metricCalculator;
     }
+
+    public String getFqn() {
+        return fqn;
+    }
 }

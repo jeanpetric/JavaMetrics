@@ -7,7 +7,7 @@ import java.util.Map;
 public interface MetricProvider {
     public void setInputFiles(List<File> files);
 
-    public void setOutputResult(Map<String, String> results);
+    public void setOutputResult(Map<String, Map<String, String>> results);
 
     public void start();
 }

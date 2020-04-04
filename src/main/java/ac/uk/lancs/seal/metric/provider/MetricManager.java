@@ -6,7 +6,7 @@ import java.util.Map;
 
 public abstract class MetricManager implements MetricProvider {
     private List<File> files;
-    private Map<String, String> results;
+    private Map<String, Map<String, String>> results;
 
     @Override
     public void setInputFiles(List<File> files) {
@@ -14,7 +14,7 @@ public abstract class MetricManager implements MetricProvider {
     }
 
     @Override
-    public void setOutputResult(Map<String, String> results) {
+    public void setOutputResult(Map<String, Map<String, String>> results) {
         this.results = results;
     }
 
@@ -24,11 +24,10 @@ public abstract class MetricManager implements MetricProvider {
 
         for (GenericMetric metric : metrics) {
             MetricCalculator metricCalculator = metric.getMetricCalculator();
-            PreprocessStorage<?> storage = metric.getPreprocessStorage();
             for (File file : files) {
-                metricCalculator.process(file, results, storage);
+                metricCalculator.process(file, results, metric);
             }
-            metricCalculator.postprocess(results, storage);
+            metricCalculator.postprocess(results, metric);
         }
     }
 
