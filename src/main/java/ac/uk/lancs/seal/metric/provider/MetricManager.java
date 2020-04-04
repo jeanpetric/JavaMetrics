@@ -3,6 +3,7 @@ package ac.uk.lancs.seal.metric.provider;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 public abstract class MetricManager implements MetricProvider {
     private List<File> files;
@@ -20,9 +21,11 @@ public abstract class MetricManager implements MetricProvider {
 
     @Override
     public void start() {
-        List<GenericMetric> metrics = getMetrics();
+        Queue<GenericMetric> metrics = getMetrics();
+        int queueSize = metrics.size();
 
-        for (GenericMetric metric : metrics) {
+        for (int i = 0; i < queueSize; i++) {
+            GenericMetric metric = metrics.remove();
             MetricCalculator metricCalculator = metric.getMetricCalculator();
             PreprocessStorage<?> storage = metric.getPreprocessStorage();
             for (File file : files) {
@@ -32,5 +35,5 @@ public abstract class MetricManager implements MetricProvider {
         }
     }
 
-    protected abstract List<GenericMetric> getMetrics();
+    protected abstract Queue<GenericMetric> getMetrics();
 }
