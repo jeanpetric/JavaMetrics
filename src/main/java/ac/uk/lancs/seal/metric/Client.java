@@ -36,7 +36,6 @@ public class Client {
         List<String> exclude = new LinkedList<String>();
         exclude.add(".*Test\\.java");
         pathsList = pathUtil.filterExcludeFilesThatMatch(pathsList, exclude);
-        pathsList.stream().forEach(p -> System.out.println(p.getFileName().toString()));
         List<File> filesList = pathUtil.pathToFiles(pathsList);
         MetricManager metricManager = new JavaPackageManager();
         metricManager.setInputFiles(filesList);
