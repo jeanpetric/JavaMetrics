@@ -5,8 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public abstract class MetricManager implements MetricProvider {
+    private static final Logger LOGGER = Logger.getLogger(MetricManager.class.getName());
     private List<File> files;
     private Map<String, Map<String, String>> results;
 
@@ -33,7 +36,7 @@ public abstract class MetricManager implements MetricProvider {
             Map<String, String> tmpResult = new HashMap<>();
             for (File file : files) {
                 try {
-                    System.out.println("file: " + file.getCanonicalPath());
+                    LOGGER.log(Level.INFO, "processing {0} file", file.getCanonicalPath().toString());
                 } catch (Exception e) {
                 }
                 metricCalculator.process(file, tmpResult, storage);

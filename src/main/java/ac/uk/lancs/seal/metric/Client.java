@@ -1,4 +1,4 @@
-package ac.uk.lancs.seal.metric.provider;
+package ac.uk.lancs.seal.metric;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,8 +14,11 @@ import com.github.javaparser.StaticJavaParser;
 
 import ac.uk.lancs.seal.metric.io.DefaultPathUtil;
 import ac.uk.lancs.seal.metric.io.PathUtil;
+import ac.uk.lancs.seal.metric.provider.JavaPackageManager;
+import ac.uk.lancs.seal.metric.provider.MetricManager;
 
 public class Client {
+
     public Client() {
         StaticJavaParser.getConfiguration().setLanguageLevel(LanguageLevel.CURRENT);
         StaticJavaParser.getConfiguration().setPreprocessUnicodeEscapes(true);
