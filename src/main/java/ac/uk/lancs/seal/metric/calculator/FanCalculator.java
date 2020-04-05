@@ -16,12 +16,12 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
 import ac.uk.lancs.seal.metric.provider.MetricCalculator;
 import ac.uk.lancs.seal.metric.provider.PreprocessStorage;
-
+/*
 public class FanCalculator implements MetricCalculator {
     private String packageName;
 
     @Override
-    public void process(File file, Map<String, Map<String, String>> result, PreprocessStorage<?> storage) {
+    public void process(File file, Map<String, String> result, PreprocessStorage<?> storage) {
         packageName = "";
         Set<String> imports = new HashSet<String>();
         Map<String, Set<String>> preStorage = (Map<String, Set<String>>) storage.get();
@@ -38,13 +38,13 @@ public class FanCalculator implements MetricCalculator {
     }
 
     @Override
-    public void postprocess(Map<String, Map<String, String>> result, PreprocessStorage<?> storage) {
+    public void postprocess(Map<String, String> result, PreprocessStorage<?> storage) {
         Map<String, Set<String>> preStorage = (Map<String, Set<String>>) storage.get();
         fanIn(result, preStorage);
         fanOut(result, preStorage);
     }
 
-    private void fanOut(Map<String, Map<String, String>> result, Map<String, Set<String>> preStorage) {
+    private void fanOut(Map<String, String> result, Map<String, Set<String>> preStorage) {
         // TODO: wrong logic!
         for (String pckgName : preStorage.keySet()) {
             long count = 0;
@@ -107,3 +107,4 @@ public class FanCalculator implements MetricCalculator {
         }
     }
 }
+*/

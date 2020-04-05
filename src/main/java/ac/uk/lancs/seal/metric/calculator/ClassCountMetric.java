@@ -7,7 +7,7 @@ public class ClassCountMetric implements Metric {
     private GenericMetric classCountMetric;
 
     public ClassCountMetric() {
-        classCountMetric = new GenericMetric(new ClassCountCalculator(), null);
+        classCountMetric = new GenericMetric("pckg:classCount", new ClassCountCalculator(), null);
     }
 
     @Override

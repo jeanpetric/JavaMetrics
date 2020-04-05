@@ -16,11 +16,13 @@ import com.github.javaparser.StaticJavaParser;
 
 public class Client {
     public Client() {
-        StaticJavaParser.getConfiguration().setLanguageLevel(LanguageLevel.JAVA_8);
+        StaticJavaParser.getConfiguration().setLanguageLevel(LanguageLevel.CURRENT);
     }
 
     public static void main(String[] args) throws IOException {
-        List<Path> files = Files.walk(Paths.get("/home/jean/eclipse-workspace/drummer/src/main/java"))
+        String path = "/home/jean/eclipse-workspace/drummer/src/main/java";
+//        String path = "/home/jean/eclipse-workspace/hadoop-common";
+        List<Path> files = Files.walk(Paths.get(path))
                 .filter(Files::isRegularFile).filter(f -> f.getFileName().toString().endsWith("java"))
                 .collect(Collectors.toList());
 //        files.forEach(f -> System.out.println(f.getFileName()));
@@ -31,7 +33,7 @@ public class Client {
         metricManager.setOutputResult(results);
         metricManager.start();
         for (String p : results.keySet()) {
-            System.out.println("package: " + p);
+            System.out.println("metric: " + p);
             for (Entry<String, String> m : results.get(p).entrySet()) {
                 System.out.println("\t" + m.getKey() + " -> " + m.getValue());
             }

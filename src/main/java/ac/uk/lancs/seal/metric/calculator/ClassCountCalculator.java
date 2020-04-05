@@ -2,7 +2,6 @@ package ac.uk.lancs.seal.metric.calculator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.github.javaparser.StaticJavaParser;
@@ -20,7 +19,7 @@ public class ClassCountCalculator implements MetricCalculator {
     private int classCount;
 
     @Override
-    public void process(File file, Map<String, Map<String, String>> result, PreprocessStorage<?> storage) {
+    public void process(File file, Map<String, String> result, PreprocessStorage<?> storage) {
         packageName = "";
         classCount = 0;
         try {
@@ -32,25 +31,29 @@ public class ClassCountCalculator implements MetricCalculator {
     }
 
     @Override
-    public void postprocess(Map<String, Map<String, String>> result, PreprocessStorage<?> storage) {
+    public void postprocess(Map<String, String> result, PreprocessStorage<?> storage) {
         // NOP
     }
 
-    private void recordCount(Map<String, Map<String, String>> result) {
-        String metricFqn = "pckg:ccnt";
+    private void recordCount(Map<String, String> result) {
         int currentCount = 0;
         if (!result.containsKey(packageName)) {
-            Map<String, String> map = new HashMap<>();
-            map.put(metricFqn, "0");
-            result.put(packageName, map);
+            result.put(packageName, "1");
+        } else {
+            currentCount = Integer.valueOf(result.get(packageName));
+            result.put(packageName, String.valueOf(currentCount + classCount));
         }
-        currentCount = Integer.valueOf(result.get(packageName).get(metricFqn));
-        result.get(packageName).put(metricFqn, String.valueOf(currentCount + classCount));
-        result.put(packageName, result.get(packageName));
     }
 
     private void parseAndVisit(File file) throws FileNotFoundException {
-        CompilationUnit cu = StaticJavaParser.parse(file);
+        CompilationUnit cu = null;
+        String filePath = null;
+        try {
+            filePath = file.getCanonicalPath();
+            cu = StaticJavaParser.parse(file);
+        } catch (Exception e) {
+            System.out.println(filePath);
+        }
         VoidVisitor<Void> packageNameVisitor = new PackageNameVisitor();
         VoidVisitor<Void> classCountVisitor = new ClassVisitor();
         packageNameVisitor.visit(cu, null);

@@ -1,6 +1,7 @@
 package ac.uk.lancs.seal.metric.provider;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -26,19 +27,20 @@ public abstract class MetricManager implements MetricProvider {
 
         for (int i = 0; i < queueSize; i++) {
             GenericMetric metric = metrics.remove().getMetric();
+            String metricFqn = metric.getFqn();
             MetricCalculator metricCalculator = metric.getMetricCalculator();
             PreprocessStorage<?> storage = metric.getPreprocessStorage();
+            Map<String, String> tmpResult = new HashMap<>();
             for (File file : files) {
-                // SHOULD PASS SIMPLE RESULTS AND THEN METRICMANAGER CAN ADD THIS SIMPLE RESULT
-                // INTO A PROPER RESULT MAP. OTHERWISE METRICS CAN OVERWRITE RESULTS OF OTHER
-                // METRICS!!! metric -> packageName : value
-                metricCalculator.process(file, results, storage);
+                metricCalculator.process(file, tmpResult, storage);
             }
-            metricCalculator.postprocess(results, storage);
+            metricCalculator.postprocess(tmpResult, storage);
+            mergeResults(metricFqn, tmpResult);
         }
     }
 
-    private void mergeResults(Object tempResults) {
+    private void mergeResults(String metricFqn, Map<String, String> metricResults) {
+        results.put(metricFqn, metricResults);
     }
 
     protected abstract Queue<Metric> getMetrics();
