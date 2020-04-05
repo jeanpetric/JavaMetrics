@@ -1,5 +1,6 @@
 package ac.uk.lancs.seal.metric.io;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,5 +48,10 @@ public class DefaultPathUtil implements PathUtil {
                 return p.getFileName().toString().matches(f);
             });
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<File> pathToFiles(List<Path> paths) {
+        return paths.stream().map(p -> p.toFile()).collect(Collectors.toList());
     }
 }
