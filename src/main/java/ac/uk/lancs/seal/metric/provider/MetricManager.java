@@ -32,6 +32,10 @@ public abstract class MetricManager implements MetricProvider {
             PreprocessStorage<?> storage = metric.getPreprocessStorage();
             Map<String, String> tmpResult = new HashMap<>();
             for (File file : files) {
+                try {
+                    System.out.println("file: " + file.getCanonicalPath());
+                } catch (Exception e) {
+                }
                 metricCalculator.process(file, tmpResult, storage);
             }
             metricCalculator.postprocess(tmpResult, storage);
