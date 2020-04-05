@@ -20,8 +20,8 @@ public class Client {
     }
 
     public static void main(String[] args) throws IOException {
-        String path = "/home/jean/eclipse-workspace/drummer/src/main/java";
-//        String path = "/home/jean/eclipse-workspace/hadoop-common";
+//        String path = "/home/jean/eclipse-workspace/drummer/src/main/java";
+        String path = "/home/jean/eclipse-workspace/hadoop-common";
         List<Path> files = Files.walk(Paths.get(path))
                 .filter(Files::isRegularFile).filter(f -> f.getFileName().toString().endsWith("java"))
                 .collect(Collectors.toList());
