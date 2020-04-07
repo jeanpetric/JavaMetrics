@@ -35,7 +35,11 @@ public class FanOutCalculator implements MetricCalculator {
     public void postprocess(Map<String, String> result, PreprocessStorage<?> storage) {
         Map<String, Set<String>> preStorage = (Map<String, Set<String>>) storage.get();
         preStorage.entrySet().forEach(pckg -> {
-            result.put(pckg.getKey(), String.valueOf(preStorage.get(pckg.getKey()).size()));
+            try {
+                result.put(pckg.getKey(), String.valueOf(preStorage.get(pckg.getKey()).size()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
     }
 

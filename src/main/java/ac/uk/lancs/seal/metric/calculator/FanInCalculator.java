@@ -14,7 +14,6 @@ import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
 import ac.uk.lancs.seal.metric.provider.MetricCalculator;
-import ac.uk.lancs.seal.metric.provider.MetricCalculatorException;
 import ac.uk.lancs.seal.metric.provider.PreprocessStorage;
 
 public class FanInCalculator implements MetricCalculator {
@@ -62,9 +61,6 @@ public class FanInCalculator implements MetricCalculator {
         VoidVisitor<Set<String>> importVisitor = new ImportVisitor();
         packageNameVisitor.visit(cu, null);
         importVisitor.visit(cu, imports);
-        if (packageName == null || packageName.isEmpty()) {
-            throw new MetricCalculatorException();
-        }
     }
 
     private class PackageAndClassNameVisitor extends VoidVisitorAdapter<Void> {
