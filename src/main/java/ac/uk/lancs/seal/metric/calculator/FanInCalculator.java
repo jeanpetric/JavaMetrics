@@ -13,16 +13,17 @@ import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
+import ac.uk.lancs.seal.metric.provider.MapSetStorage;
 import ac.uk.lancs.seal.metric.provider.MetricCalculator;
 import ac.uk.lancs.seal.metric.provider.PreprocessStorage;
 
 public class FanInCalculator implements MetricCalculator {
-    private String packageName;
+    private String packageName = "";
 
     @Override
     public void process(File file, Map<String, String> result, PreprocessStorage<?> storage) {
         Set<String> importedPackages = new HashSet<String>();
-        Map<String, Set<String>> preStorage = (Map<String, Set<String>>) storage.get();
+        MapSetStorage preStorage = (MapSetStorage) storage;
         try {
             parseAndVisit(file, importedPackages);
             updatePrestorage(importedPackages, preStorage);
@@ -33,26 +34,21 @@ public class FanInCalculator implements MetricCalculator {
 
     @Override
     public void postprocess(Map<String, String> result, PreprocessStorage<?> storage) {
-        Map<String, Set<String>> packages = (Map<String, Set<String>>) storage.get();
+        MapSetStorage packages = (MapSetStorage) storage;
 
-        packages.keySet().forEach(pckg -> {
-            try {
-                long cnt = packages.entrySet().stream()
-                        .filter(k -> !k.getKey().equals(pckg) && k.getValue().contains(pckg))
-                        .count();
-                result.put(pckg, String.valueOf(cnt));
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
+        packages.get().keySet().forEach(pckg -> {
+            long cnt = packages.get().entrySet().stream()
+                    .filter(k -> !k.getKey().equals(pckg) && k.getValue().contains(pckg)).count();
+            result.put(pckg, String.valueOf(cnt));
         });
     }
 
-    private void updatePrestorage(Set<String> importedPackages, Map<String, Set<String>> preStorage) {
-        Set<String> currentPackages = preStorage.get(packageName);
+    private void updatePrestorage(Set<String> importedPackages, MapSetStorage preStorage) {
+        Set<String> currentPackages = preStorage.get().get(packageName);
         if (currentPackages != null) {
             importedPackages.addAll(currentPackages);
         }
-        preStorage.put(packageName, importedPackages);
+        preStorage.get().put(packageName, importedPackages);
     }
 
     private void parseAndVisit(File file, Set<String> imports) throws IOException {

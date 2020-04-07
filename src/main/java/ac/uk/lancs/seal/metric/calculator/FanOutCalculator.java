@@ -13,16 +13,17 @@ import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
+import ac.uk.lancs.seal.metric.provider.MapSetStorage;
 import ac.uk.lancs.seal.metric.provider.MetricCalculator;
 import ac.uk.lancs.seal.metric.provider.PreprocessStorage;
 
 public class FanOutCalculator implements MetricCalculator {
-    private String packageName;
+    private String packageName = "";
 
     @Override
     public void process(File file, Map<String, String> result, PreprocessStorage<?> storage) {
         Set<String> importedPackages = new HashSet<String>();
-        Map<String, Set<String>> preStorage = (Map<String, Set<String>>) storage.get();
+        MapSetStorage preStorage = (MapSetStorage) storage;
         try {
             parseAndVisit(file, importedPackages);
             updatePrestorage(importedPackages, preStorage);
@@ -33,22 +34,22 @@ public class FanOutCalculator implements MetricCalculator {
 
     @Override
     public void postprocess(Map<String, String> result, PreprocessStorage<?> storage) {
-        Map<String, Set<String>> preStorage = (Map<String, Set<String>>) storage.get();
-        preStorage.entrySet().forEach(pckg -> {
+        MapSetStorage preStorage = (MapSetStorage) storage;
+        preStorage.get().entrySet().forEach(pckg -> {
             try {
-                result.put(pckg.getKey(), String.valueOf(preStorage.get(pckg.getKey()).size()));
+                result.put(pckg.getKey(), String.valueOf(preStorage.get().get(pckg.getKey()).size()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
     }
 
-    private void updatePrestorage(Set<String> importedPackages, Map<String, Set<String>> preStorage) {
-        Set<String> currentPackages = preStorage.get(packageName);
+    private void updatePrestorage(Set<String> importedPackages, MapSetStorage preStorage) {
+        Set<String> currentPackages = preStorage.get().get(packageName);
         if (currentPackages != null) {
             importedPackages.addAll(currentPackages);
         }
-        preStorage.put(packageName, importedPackages);
+        preStorage.get().put(packageName, importedPackages);
     }
 
     private void parseAndVisit(File file, Set<String> imports) throws FileNotFoundException {

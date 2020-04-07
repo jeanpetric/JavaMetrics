@@ -15,8 +15,8 @@ import ac.uk.lancs.seal.metric.provider.MetricCalculator;
 import ac.uk.lancs.seal.metric.provider.PreprocessStorage;
 
 public class AbstractClassCountCalculator implements MetricCalculator {
-    private String packageName;
-    private int classCount;
+    private String packageName = "";
+    private int classCount = 0;
 
     @Override
     public void process(File file, Map<String, String> result, PreprocessStorage<?> storage) {
