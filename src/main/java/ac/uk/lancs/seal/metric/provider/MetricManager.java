@@ -10,6 +10,8 @@ import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ac.uk.lancs.seal.metric.Global;
+
 public abstract class MetricManager implements MetricProvider {
     private static final Logger LOGGER = Logger.getLogger(MetricManager.class.getName());
     private List<File> files;
@@ -49,6 +51,9 @@ public abstract class MetricManager implements MetricProvider {
                 String filePath = "";
                 try {
                     filePath = file.getCanonicalPath().toString();
+                    if (Global.DEBUG) {
+                        LOGGER.log(Level.INFO, "processing {0} file", filePath);
+                    }
                     metricCalculator.process(file, tmpResult, storage);
                 } catch (MetricCalculatorException e) {
                     LOGGER.log(Level.INFO, "cannot process {0} file", filePath);

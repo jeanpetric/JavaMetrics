@@ -10,6 +10,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import com.github.javaparser.ParserConfiguration.LanguageLevel;
@@ -24,6 +26,7 @@ import ac.uk.lancs.seal.metric.provider.MetricManager;
 import ac.uk.lancs.seal.metric.provider.ResultMap;
 
 public class Client {
+    private static final Logger LOGGER = Logger.getLogger(Client.class.getName());
 
     public Client() {
         StaticJavaParser.getConfiguration().setLanguageLevel(LanguageLevel.CURRENT);
@@ -31,8 +34,7 @@ public class Client {
     }
 
     public static void main(String[] args) throws IOException {
-//        String path = "/home/jean/eclipse-workspace/camel";
-//        String path = "/home/jean/eclipse-workspace/drummer/src";
+        LOGGER.log(Level.INFO, "loading configurations");
         Properties properties = loadConfig(args);
         String path = properties.getProperty("projectRoot");
         List<Path> includePaths = stringsToPaths(Arrays.asList(properties.getProperty("includePaths").split(",")));
@@ -40,7 +42,9 @@ public class Client {
         List<String> includeFiles = Arrays.asList(properties.getProperty("includeFiles").split(","));
         List<String> excludeFiles = Arrays.asList(properties.getProperty("excludeFiles").split(","));
         String resultOutput = properties.getProperty("resultOutput");
+        Global.DEBUG = properties.getProperty("debug").equals("true") ? true : false;
 
+        LOGGER.log(Level.INFO, "resolving paths");
         ResultMap results = new ResultMap();
         PathUtil pathUtil = new DefaultPathUtil();
         List<Path> pathsList = pathUtil.getFilePathsRecursively(path);
@@ -48,12 +52,18 @@ public class Client {
         pathsList = pathUtil.filterExcludeFilesThatMatch(pathsList, excludeFiles);
         pathsList = pathUtil.filterIncludeAbsolutePaths(pathsList, includePaths);
         List<File> filesList = pathUtil.pathToFiles(pathsList);
+
+        LOGGER.log(Level.INFO, "setting up and starting metric collection");
         MetricManager metricManager = new JavaPackageManager();
         metricManager.setInputFiles(filesList);
         metricManager.setOutputResult(results);
         metricManager.start();
+
+        LOGGER.log(Level.INFO, "exporting metrics");
         ResultManager resultManager = new ResultManager(results, new CsvOutputProcessor(resultOutput));
         resultManager.export();
+
+        LOGGER.log(Level.INFO, "finished");
     }
 
     private static List<Path> stringsToPaths(List<String> paths) {
