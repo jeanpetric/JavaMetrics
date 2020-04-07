@@ -5,15 +5,19 @@ import java.util.Queue;
 
 public class JavaSelectionManager extends MetricManager {
 
-    Queue<Metric> metrics = new LinkedList<Metric>();
+    private Queue<Metric> selectedMetrics = new LinkedList<Metric>();
 
     public void add(Metric metric) {
-        metrics.add(metric);
+        selectedMetrics.add(metric);
+    }
+
+    public void addAll(Queue<Metric> metricCollection) {
+        selectedMetrics.addAll(metricCollection);
     }
 
     @Override
     protected Queue<Metric> getMetrics() {
-        return metrics;
+        return selectedMetrics;
     }
 
 }

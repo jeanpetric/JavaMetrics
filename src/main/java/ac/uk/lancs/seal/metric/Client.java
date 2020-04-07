@@ -17,11 +17,13 @@ import java.util.stream.Collectors;
 import com.github.javaparser.ParserConfiguration.LanguageLevel;
 import com.github.javaparser.StaticJavaParser;
 
-import ac.uk.lancs.seal.metric.io.CsvOutputProcessor;
+import ac.uk.lancs.seal.metric.calculator.JavaMetricFactory;
+import ac.uk.lancs.seal.metric.calculator.JavaPackageMetricFactory;
 import ac.uk.lancs.seal.metric.io.DefaultPathUtil;
 import ac.uk.lancs.seal.metric.io.PathUtil;
 import ac.uk.lancs.seal.metric.io.ResultManager;
-import ac.uk.lancs.seal.metric.provider.JavaPackageManager;
+import ac.uk.lancs.seal.metric.io.StdOutputProcessor;
+import ac.uk.lancs.seal.metric.provider.JavaSelectionManager;
 import ac.uk.lancs.seal.metric.provider.MetricManager;
 import ac.uk.lancs.seal.metric.provider.ResultMap;
 
@@ -41,6 +43,7 @@ public class Client {
         List<Path> excludePaths = stringsToPaths(Arrays.asList(properties.getProperty("excludePaths").split(",")));
         List<String> includeFiles = Arrays.asList(properties.getProperty("includeFiles").split(","));
         List<String> excludeFiles = Arrays.asList(properties.getProperty("excludeFiles").split(","));
+        List<String> selectedMetrics = Arrays.asList(properties.getProperty("selectedMetrics").split(","));
         String resultOutput = properties.getProperty("resultOutput");
         Global.DEBUG = properties.getProperty("debug").equals("true") ? true : false;
 
@@ -54,13 +57,20 @@ public class Client {
         List<File> filesList = pathUtil.pathToFiles(pathsList);
 
         LOGGER.log(Level.INFO, "setting up and starting metric collection");
-        MetricManager metricManager = new JavaPackageManager();
+        MetricManager metricManager = null;
+        JavaSelectionManager jsm = new JavaSelectionManager();
+        if (selectedMetrics.isEmpty()) {
+            jsm.addAll(JavaPackageMetricFactory.getMetrics());
+        } else {
+            jsm.addAll(JavaMetricFactory.getInstance().getMetrics(selectedMetrics));
+        }
+        metricManager = jsm;
         metricManager.setInputFiles(filesList);
         metricManager.setOutputResult(results);
         metricManager.start();
 
         LOGGER.log(Level.INFO, "exporting metrics");
-        ResultManager resultManager = new ResultManager(results, new CsvOutputProcessor(resultOutput));
+        ResultManager resultManager = new ResultManager(results, new StdOutputProcessor());
         resultManager.export();
 
         LOGGER.log(Level.INFO, "finished");

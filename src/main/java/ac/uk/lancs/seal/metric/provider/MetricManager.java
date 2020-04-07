@@ -22,11 +22,6 @@ public abstract class MetricManager implements MetricProvider {
     private int progressStep;
     private int nextProgressReport;
 
-    public MetricManager() {
-        metrics = getMetrics();
-        metricsCount = metrics.size();
-    }
-
     @Override
     public void setInputFiles(List<File> files) {
         this.files = files;
@@ -40,6 +35,7 @@ public abstract class MetricManager implements MetricProvider {
 
     @Override
     public void start() {
+        prepareMetrics();
         setProgress();
         for (int i = 0; i < metricsCount; i++) {
             GenericMetric metric = metrics.remove().getMetric();
@@ -69,6 +65,11 @@ public abstract class MetricManager implements MetricProvider {
             }
             mergeResults(metricFqn, tmpResult);
         }
+    }
+
+    private void prepareMetrics() {
+        metrics = getMetrics();
+        metricsCount = metrics.size();
     }
 
     private void mergeResults(String metricFqn, Map<String, String> metricResults) {

@@ -6,9 +6,16 @@ import ac.uk.lancs.seal.metric.provider.Metric;
 
 public class FanOutMetric implements Metric {
 
+    private final String metricName = "pckg:fanOut";
+
     @Override
     public GenericMetric getMetric() {
-        return new GenericMetric("pckg:fanOut", new FanOutCalculator(), new MapSetStorage());
+        return new GenericMetric(metricName, new FanOutCalculator(), new MapSetStorage());
+    }
+
+    @Override
+    public String getMetricName() {
+        return metricName;
     }
 
 }

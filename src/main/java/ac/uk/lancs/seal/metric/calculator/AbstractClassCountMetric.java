@@ -4,14 +4,16 @@ import ac.uk.lancs.seal.metric.provider.GenericMetric;
 import ac.uk.lancs.seal.metric.provider.Metric;
 
 public class AbstractClassCountMetric implements Metric {
-    private GenericMetric classCountMetric;
 
-    public AbstractClassCountMetric() {
-        classCountMetric = new GenericMetric("pckg:abstractClassCount", new AbstractClassCountCalculator(), null);
-    }
+    private final String metricName = "pckg:abstractClassCount";
 
     @Override
     public GenericMetric getMetric() {
-        return classCountMetric;
+        return new GenericMetric(metricName, new AbstractClassCountCalculator(), null);
+    }
+
+    @Override
+    public String getMetricName() {
+        return metricName;
     }
 }
