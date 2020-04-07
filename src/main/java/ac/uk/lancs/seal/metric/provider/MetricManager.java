@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 public abstract class MetricManager implements MetricProvider {
     private static final Logger LOGGER = Logger.getLogger(MetricManager.class.getName());
     private List<File> files;
-    private Map<String, Map<String, String>> results;
+    private ResultMap results;
 
     @Override
     public void setInputFiles(List<File> files) {
@@ -19,7 +19,7 @@ public abstract class MetricManager implements MetricProvider {
     }
 
     @Override
-    public void setOutputResult(Map<String, Map<String, String>> results) {
+    public void setOutputResult(ResultMap results) {
         this.results = results;
     }
 

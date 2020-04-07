@@ -1,32 +1,23 @@
 package ac.uk.lancs.seal.metric.io;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.Arrays;
+import java.util.List;
+
+import ac.uk.lancs.seal.metric.provider.ResultMap;
 
 public class ResultManager {
-    private Map<String, Map<String, String>> results;
-    
-    public ResultManager(Map<String, Map<String, String>> resultMap) {
-        results = resultMap;
-    }
-    
-    public void toCsv(String csvFilename) {
-    }
-    
-    private Map<String, Map<String, String>> transpose(Map<String, Map<String, String>> original) {
-        Map<String, Map<String, String>> transposed = new HashMap<String, Map<String, String>>();
-        Set<String> keys = original.keySet();
-        while (keys.iterator().hasNext()) {
-            String metric = keys.iterator().next();
-            // TODO
-        }
-        return transposed;
+    private List<OutputProcessor> processors;
+
+    public ResultManager(ResultMap resultMap, OutputProcessor... processors) {
+        this.processors = Arrays.asList(processors);
+        process(resultMap);
     }
 
-    private boolean process() {
-        boolean result = true;
-        Set<String> metrics = results.keySet();
-        return result;
+    private void process(ResultMap resultMap) {
+        processors.forEach(p -> p.toFormat(resultMap));
+    }
+
+    public void export() {
+        processors.forEach(p -> p.export());
     }
 }
