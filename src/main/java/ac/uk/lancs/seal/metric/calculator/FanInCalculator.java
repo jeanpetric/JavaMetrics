@@ -1,7 +1,7 @@
 package ac.uk.lancs.seal.metric.calculator;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +14,7 @@ import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
 import ac.uk.lancs.seal.metric.provider.MetricCalculator;
+import ac.uk.lancs.seal.metric.provider.MetricCalculatorException;
 import ac.uk.lancs.seal.metric.provider.PreprocessStorage;
 
 public class FanInCalculator implements MetricCalculator {
@@ -26,7 +27,7 @@ public class FanInCalculator implements MetricCalculator {
         try {
             parseAndVisit(file, importedPackages);
             updatePrestorage(importedPackages, preStorage);
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -36,9 +37,14 @@ public class FanInCalculator implements MetricCalculator {
         Map<String, Set<String>> packages = (Map<String, Set<String>>) storage.get();
 
         packages.keySet().forEach(pckg -> {
-            long cnt = packages.entrySet().stream().filter(k -> !k.getKey().equals(pckg) && k.getValue().contains(pckg))
-                    .count();
-            result.put(pckg, String.valueOf(cnt));
+            try {
+                long cnt = packages.entrySet().stream()
+                        .filter(k -> !k.getKey().equals(pckg) && k.getValue().contains(pckg))
+                        .count();
+                result.put(pckg, String.valueOf(cnt));
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
         });
     }
 
@@ -50,12 +56,15 @@ public class FanInCalculator implements MetricCalculator {
         preStorage.put(packageName, importedPackages);
     }
 
-    private void parseAndVisit(File file, Set<String> imports) throws FileNotFoundException {
+    private void parseAndVisit(File file, Set<String> imports) throws IOException {
         CompilationUnit cu = StaticJavaParser.parse(file);
         VoidVisitor<Void> packageNameVisitor = new PackageAndClassNameVisitor();
         VoidVisitor<Set<String>> importVisitor = new ImportVisitor();
         packageNameVisitor.visit(cu, null);
         importVisitor.visit(cu, imports);
+        if (packageName == null || packageName.isEmpty()) {
+            throw new MetricCalculatorException();
+        }
     }
 
     private class PackageAndClassNameVisitor extends VoidVisitorAdapter<Void> {

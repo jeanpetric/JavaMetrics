@@ -24,7 +24,9 @@ public class DefaultPathUtil implements PathUtil {
 
     @Override
     public List<Path> filterIncludeAbsolutePaths(List<Path> paths, List<Path> filters) {
-        return paths.stream().filter(p -> filters.contains(p.getParent())).collect(Collectors.toList());
+        return paths.stream().filter(p -> {
+            return filters.stream().filter(f -> p.toString().contains(f.toString())).count() > 0 ? true : false;
+        }).collect(Collectors.toList());
     }
 
     @Override

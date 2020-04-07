@@ -1,6 +1,7 @@
 package ac.uk.lancs.seal.metric.provider;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,13 +36,21 @@ public abstract class MetricManager implements MetricProvider {
             PreprocessStorage<?> storage = metric.getPreprocessStorage();
             Map<String, String> tmpResult = new HashMap<>();
             for (File file : files) {
+                String filePath = "";
                 try {
-                    LOGGER.log(Level.INFO, "processing {0} file", file.getCanonicalPath().toString());
-                } catch (Exception e) {
+                    filePath = file.getCanonicalPath().toString();
+                    metricCalculator.process(file, tmpResult, storage);
+                } catch (MetricCalculatorException e) {
+                    LOGGER.log(Level.INFO, "cannot process {0} file", filePath);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                metricCalculator.process(file, tmpResult, storage);
             }
-            metricCalculator.postprocess(tmpResult, storage);
+            try {
+                metricCalculator.postprocess(tmpResult, storage);
+            } catch (MetricCalculatorException e) {
+                LOGGER.log(Level.INFO, "postprocessing of {0} failed", metric);
+            }
             mergeResults(metricFqn, tmpResult);
         }
     }
