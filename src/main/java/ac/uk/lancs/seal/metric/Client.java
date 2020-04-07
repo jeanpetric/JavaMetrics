@@ -18,7 +18,6 @@ import com.github.javaparser.ParserConfiguration.LanguageLevel;
 import com.github.javaparser.StaticJavaParser;
 
 import ac.uk.lancs.seal.metric.calculator.JavaMetricFactory;
-import ac.uk.lancs.seal.metric.calculator.JavaPackageMetricFactory;
 import ac.uk.lancs.seal.metric.io.DefaultPathUtil;
 import ac.uk.lancs.seal.metric.io.PathUtil;
 import ac.uk.lancs.seal.metric.io.ResultManager;
@@ -59,11 +58,7 @@ public class Client {
         LOGGER.log(Level.INFO, "setting up and starting metric collection");
         MetricManager metricManager = null;
         JavaSelectionManager jsm = new JavaSelectionManager();
-        if (selectedMetrics.isEmpty()) {
-            jsm.addAll(JavaPackageMetricFactory.getMetrics());
-        } else {
-            jsm.addAll(JavaMetricFactory.getInstance().getMetrics(selectedMetrics));
-        }
+        jsm.addAll(JavaMetricFactory.getInstance().getMetrics(selectedMetrics));
         metricManager = jsm;
         metricManager.setInputFiles(filesList);
         metricManager.setOutputResult(results);
