@@ -22,7 +22,7 @@ import ac.uk.lancs.seal.metric.io.DefaultPathUtil;
 import ac.uk.lancs.seal.metric.io.PathUtil;
 import ac.uk.lancs.seal.metric.io.ResultManager;
 import ac.uk.lancs.seal.metric.io.StdOutputProcessor;
-import ac.uk.lancs.seal.metric.provider.JavaSelectionManager;
+import ac.uk.lancs.seal.metric.provider.JavaMetricSelectionManager;
 import ac.uk.lancs.seal.metric.provider.MetricManager;
 import ac.uk.lancs.seal.metric.provider.ResultMap;
 
@@ -57,7 +57,7 @@ public class Client {
 
         LOGGER.log(Level.INFO, "setting up and starting metric collection");
         MetricManager metricManager = null;
-        JavaSelectionManager jsm = new JavaSelectionManager();
+        JavaMetricSelectionManager jsm = new JavaMetricSelectionManager();
         jsm.addAll(JavaMetricFactory.getInstance().getMetrics(selectedMetrics));
         metricManager = jsm;
         metricManager.setInputFiles(filesList);

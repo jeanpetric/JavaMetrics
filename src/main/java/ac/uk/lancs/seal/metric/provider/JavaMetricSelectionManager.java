@@ -3,7 +3,7 @@ package ac.uk.lancs.seal.metric.provider;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class JavaSelectionManager extends MetricManager {
+public class JavaMetricSelectionManager extends MetricManager {
 
     private Queue<Metric> selectedMetrics = new LinkedList<Metric>();
 
