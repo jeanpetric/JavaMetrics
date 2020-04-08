@@ -6,6 +6,7 @@ Extensible tool for gathering static code metrics for Java. At the moment, this 
 - easily extensible
 - allows selection of specific static code metrics
 - runs on source code (rather than byte code)
+- can be used as a library in any Java code
 
 # Running the tool
 
