@@ -18,6 +18,8 @@ unzip JavaMetrics-<version>.zip
 cd JavaMetrics-<version>
 mvn package
 ```
+
+## Run
 Once done, the executable file will be located in the `target` directory and can be executed as follows:
 
 `java -jar JavaMetrics-<version>-release-jar-with-dependencies.jar <options>`
