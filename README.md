@@ -37,7 +37,7 @@ The following are fully qualified names of the metrics that exist in version `0.
 - `pckg:abstractClassCount`
 - `pckg:concreteClassCount`
 
-Feel free to contribute more metrics via pull requests.
+Feel free to contribute more metrics via pull requests. Find out more about how to contribute below.
 
 # Example of a config.properties file
 
@@ -53,6 +53,6 @@ selectedMetrics=pckg:fanIn,pckg:fanOut,pckg:concreteClassCount,pckg:abstractClas
 ## Error parsing a file
 JavaMetrics is built on top of JavaParser (though, JavaMetrics can be easily extended to support other parsers and/or languages). In some cases JavaParser cannot properly parse a `java` file. For example, as of version `3.15.17` of JavaParser, parsing Java `modules` is not possible. If there is a file on path which cannot be parsed, either because the file has content that is not supported by JavaParser or is malformed, JavaParser will throw a fatal `Error`. This will also cause JavaMetrics to crash. The only workaround is to identify which file(s) cause this crash and exclude them (either individually, or all files on a specific path). To identify which file(s) cause issues run JavaMetrics in `debug` mode (which lists each file that is currently being processed) and wait for the `Error` to show up (the issues is most often in the file just above the error message).
 
-# Easily extensible
+# How to contribute
 
 Todo
