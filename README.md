@@ -9,7 +9,18 @@ Extensible tool for gathering static code metrics for Java. At the moment, this 
 
 # Running the tool
 
-`java -jar JavaMetrics-<version>.jar <options>`
+## Installation
+
+Download a copy from `releases` tab and then (unix instructions):
+
+```
+unzip JavaMetrics-<version>.zip
+cd JavaMetrics-<version>
+mvn package
+```
+Once done, the executable file will be located in the `target` directory and can be executed as follows:
+
+`java -jar JavaMetrics-<version>-release-jar-with-dependencies.jar <options>`
 
 Read for the list of possible options below.
 
