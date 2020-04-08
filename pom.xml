@@ -82,8 +82,8 @@
 	</repositories>
 	
 	<scm>
-        <connection>scm:git:git://github.com/jeanpetric/JavaMetrics.git</connection>
-        <developerConnection>scm:git:git@github.com:jeanpetric/JavaMetrics.git</developerConnection>
+        <connection>scm:git:https://github.com/jeanpetric/JavaMetrics.git</connection>
+        <developerConnection>scm:git:https://github.com/jeanpetric/JavaMetrics.git</developerConnection>
         <url>https://github.com/jeanpetric/JavaMetrics.git</url>
         <tag>JavaMetrics-0.3.1</tag>
     </scm>
