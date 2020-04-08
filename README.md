@@ -7,9 +7,11 @@ Extensible tool for gathering static code metrics for Java. At the moment, this 
 - allows selection of specific static code metrics
 - runs on source code (rather than byte code)
 
-# Installation
+# Running the tool
 
-No need to install. Running `java -cp JavaMetrics-<version>.jar ac.uk.lancs.seal.metric.Client <options>` is sufficient. Read below for the list of options.
+`java -jar JavaMetrics-<version>.jar <options>`
+
+Read for the list of possible options below.
 
 # Options
 
