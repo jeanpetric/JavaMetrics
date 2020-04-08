@@ -29,7 +29,7 @@ Read for the list of possible options below.
 
 # Options
 
-This options are available since version 0.3.1:
+This options are available since version `0.4.1`:
 
 - `-c confFile.properties` [mandatory]: configuration file, see for an example below
 - `-s dir` [mandatory]: absolute path to the root source directory, e.g. /home/user/workspace/my_java_project
@@ -44,7 +44,7 @@ NB: All non mandatory options can be specified within a config file. If options 
 
 # Metrics
 
-The following are fully qualified names of the metrics that exist in version `0.3.1`:
+The following are fully qualified names of the metrics that exist in version `0.4.1`:
 
 - `pckg:fanIn`
 - `pckg:fanOut`
