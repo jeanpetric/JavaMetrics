@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ac.uk.lancs.seal</groupId>
 	<artifactId>JavaMetrics</artifactId>
-	<version>0.4.1</version>
+	<version>0.5.1-SNAPSHOT</version>
 	<name>Static code tool for collecting Java code metrics</name>
 
 	<build>
@@ -85,6 +85,6 @@
         <connection>scm:git:git://github.com/jeanpetric/JavaMetrics.git</connection>
         <developerConnection>scm:git:git@github.com:jeanpetric/JavaMetrics.git</developerConnection>
         <url>https://github.com/jeanpetric/JavaMetrics.git</url>
-        <tag>0.4.1</tag>
+        <tag>HEAD</tag>
     </scm>
 </project>
