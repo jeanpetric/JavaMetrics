@@ -37,6 +37,16 @@ The following are fully qualified names of the metrics that exist in version `0.
 
 Feel free to contribute more metrics via pull requests.
 
+# Example of a config.properties file
+
+```
+includePaths=
+excludePaths=archetypes/
+includeFiles=.*\\.java
+excludeFiles=.*Test\\.java,module-info.java
+selectedMetrics=pckg:fanIn,pckg:fanOut,pckg:concreteClassCount,pckg:abstractClassCount
+```
+
 # Easily extensible
 
 Todo
