@@ -43,6 +43,13 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>com.cleancoder</groupId>
+			<artifactId>args</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/args.jar</systemPath>
+		</dependency>
+		<dependency>
 			<groupId>com.github.javaparser</groupId>
 			<artifactId>javaparser-symbol-solver-core</artifactId>
 			<version>3.15.17</version>

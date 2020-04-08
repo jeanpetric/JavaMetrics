@@ -36,7 +36,10 @@ public class Client {
 
     public static void main(String[] args) throws IOException {
         LOGGER.log(Level.INFO, "loading configurations");
-        Properties properties = loadConfig(args);
+        Properties properties = new Properties();
+        CommandLineArgument.process(properties, args);
+        loadConfig(properties);
+
         String path = properties.getProperty("projectRoot");
         List<Path> includePaths = stringsToPaths(Arrays.asList(properties.getProperty("includePaths").split(",")));
         List<Path> excludePaths = stringsToPaths(Arrays.asList(properties.getProperty("excludePaths").split(",")));
@@ -53,6 +56,7 @@ public class Client {
         pathsList = pathUtil.filterIncludeFilesThatMatch(pathsList, includeFiles);
         pathsList = pathUtil.filterExcludeFilesThatMatch(pathsList, excludeFiles);
         pathsList = pathUtil.filterIncludeAbsolutePaths(pathsList, includePaths);
+        pathsList = pathUtil.filterExcludeAbsolutePaths(pathsList, excludePaths);
         List<File> filesList = pathUtil.pathToFiles(pathsList);
 
         LOGGER.log(Level.INFO, "setting up and starting metric collection");
@@ -77,12 +81,8 @@ public class Client {
         return result;
     }
 
-    private static Properties loadConfig(String[] args) {
-        Properties properties = new Properties();
-        String configFile = "config.properties";
-        if (args.length >= 2) {
-            configFile = args[1];
-        }
+    private static Properties loadConfig(Properties properties) {
+        String configFile = properties.getProperty("configFile");
         InputStream inStream;
         try {
             inStream = new FileInputStream(configFile);
