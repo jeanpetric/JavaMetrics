@@ -11,21 +11,25 @@ public class CommandLineArgument {
      * d - debug, boolean
      * c - config file, String
      * s - source directory, String
+     * o - result output, String
      * i - include paths, String[]
      * e - exclude paths, String[]
      * a - include (allow) files, String[]
      * f - exclude (forbid) files, String[]
+     * m - metrics to collect, String[]
      */
     public static void process(Properties properties, String[] args) {
         try {
-            Args arg = new Args("d,c*,s*,i[*],e[*],a[*],f[*]", args);
+            Args arg = new Args("d,c*,s*,o*,i[*],e[*],a[*],f[*],m[*]", args);
             setDebug(properties, arg.getBoolean('d'));
             setString(properties, "configFile", arg.getString('c'), true);
             setString(properties, "projectRoot", arg.getString('s'), true);
+            setString(properties, "resultOutput", arg.getString('o'), true);
             setStringArray(properties, "includePaths", arg.getStringArray('i'));
             setStringArray(properties, "excludePaths", arg.getStringArray('e'));
             setStringArray(properties, "includeFiles", arg.getStringArray('a'));
             setStringArray(properties, "excludeFiles", arg.getStringArray('f'));
+            setStringArray(properties, "selectedMetrics", arg.getStringArray('m'));
         } catch (ArgsException e) {
             System.out.printf("Argument error: %s\n", e.errorMessage());
         }
