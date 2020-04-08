@@ -33,7 +33,7 @@
 							<mainClass>ac.uk.lancs.seal.metric.Client</mainClass>
 						</manifest>
 					</archive>
-					<appendAssemblyId>false</appendAssemblyId>
+					
 				</configuration>
 				<executions>
 					<execution>
@@ -82,4 +82,11 @@
 			<url>file://${basedir}/lib</url>
 		</repository>
 	</repositories>
+	
+	<scm>
+        <connection>scm:git:git://github.com/jeanpetric/JavaMetrics.git</connection>
+        <developerConnection>scm:git:git@github.com:jeanpetric/JavaMetrics.git</developerConnection>
+        <url>https://github.com/jeanpetric/JavaMetrics.git</url>
+        <tag>HEAD</tag>
+    </scm>
 </project>
