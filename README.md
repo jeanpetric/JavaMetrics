@@ -2,11 +2,17 @@
 
 Extensible tool for gathering static code metrics for Java. At the moment, this is the only JavaMetrics tool which has all of the following benefits:
 
-- opensource and free for use as you like (MIT Licence)
+- opensource and free to use for commercial or private use (GNU GPL v3 Licence)
 - easily extensible
 - allows selection of specific static code metrics
 - runs on source code (rather than byte code)
 - can be used as a library in any Java code
+
+# Licence
+
+Licence is GNU GPL v3.
+
+Please note that this package contains Uncle Bob's `javaargs` code which is included in this project with his generous permission. His code is available [here](https://github.com/unclebob/javaargs).
 
 # Running the tool
 
